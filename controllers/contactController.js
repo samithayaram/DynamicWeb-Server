@@ -14,11 +14,7 @@ exports.submitContact = async (req, res) => {
     const { name, email, message, phone } = req.body;
 
     try {
-        // 1. Save to MongoDB
-        const newContact = new Contact({ name, email, message, phone });
-        await newContact.save();
-
-        // 2. Send Email Notification
+        // Send Email Notification
         const mailOptions = {
             from: process.env.EMAIL_USER,
             to: 'samithayaram@gmail.com',
