@@ -1,6 +1,11 @@
 const Contact = require('../models/contactModel');
 const nodemailer = require('nodemailer');
 
+// Check for required environment variables
+if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+    console.error('FATAL ERROR: EMAIL_USER or EMAIL_PASS is not defined in environment variables.');
+}
+
 // Nodemailer Transporter Setup
 const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -13,7 +18,19 @@ const transporter = nodemailer.createTransport({
 exports.submitContact = async (req, res) => {
     const { name, email, message, phone } = req.body;
 
+    // Additional check inside handler for better error reporting
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+        return res.status(500).json({
+            success: false,
+            message: 'Server configuration error: Missing email credentials',
+            error: 'Missing EMAIL_USER or EMAIL_PASS on the backend environment'
+        });
+    }
+
     try {
+        // Save to MongoDB
+        await Contact.create({ name, email, message, phone });
+
         // Send Email Notification
         const mailOptions = {
             from: process.env.EMAIL_USER,
@@ -76,6 +93,6 @@ exports.submitContact = async (req, res) => {
         res.status(200).json({ success: true, message: 'Message sent and saved successfully!' });
     } catch (err) {
         console.error('Contact Error:', err);
-        res.status(500).json({ success: false, message: 'Failed to process request', error: err.message,   "Test": "Debugging message" });
+        res.status(500).json({ success: false, message: 'Failed to process request', error: err.message });
     }
 };

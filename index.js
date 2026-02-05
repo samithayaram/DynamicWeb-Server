@@ -27,6 +27,12 @@ app.get('/', (req, res) => {
     res.send('QualityAuto Server is running');
 });
 
-app.listen(port, () => {
-    console.log(`Server is running on port: ${port}`);
-});
+// Conditionally start the server
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(port, () => {
+        console.log(`Server is running on port: ${port}`);
+    });
+}
+
+// Export the app for Vercel
+module.exports = app;
