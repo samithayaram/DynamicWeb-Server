@@ -76,6 +76,6 @@ exports.submitContact = async (req, res) => {
         res.status(200).json({ success: true, message: 'Message sent and saved successfully!' });
     } catch (err) {
         console.error('Contact Error:', err);
-        res.status(500).json({ success: false, message: 'Failed to process request', error: err.message });
+        res.status(500).json({ success: false, message: 'Failed to process request', error: err.message,   "Test": "Debugging message" });
     }
 };
