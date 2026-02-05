@@ -67,7 +67,7 @@ exports.submitContact = async (req, res) => {
                         </div>
                     </div>
                     <div class="footer">
-                        Sent from QualityAuto Website Contact Form
+                        Sent from QualityAuto Website Contacts Form
                     </div>
                 </div>
             </body>
